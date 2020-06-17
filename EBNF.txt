@@ -1,0 +1,24 @@
+program = "ç" block "#ç"
+block = ":" declaration statements ':;'
+declaration = variable-declaration | function declaration
+variable-declaration = variable-identifier assignment-statement
+function-declaration = "funcao" function
+function = function-identifier ">>" parameter {','parameter} "<<"
+parameters = identifier
+assignment-statement = variable-identifier|function-identifier '=' expression
+identifier =  letter { letter | digit }
+variable-identifier =  letter { letter | digit }
+function-identifier = letter { letter | digit }
+statements = statement{';' statement}
+while-statement = 'enqnt' '>>' expression '<<' statement
+if-statement = 'se' '>>' expression '<<' statement['senao' statement]
+relational-expression = expression{rel-op expression}
+expression = term{ add-op term}
+term = factor{mult-op factor}
+factor = variable | number | string | function identifier | ">>" expression "<<" | 'nao' factor  
+add-op = '+'|'-'|'ou'|'%'
+mult-op = '*'|'/'|'and'
+rel-op = '>'|'='|'<'
+print-statement = 'printar' expression ';'
+readline-statement = 'ler' input-value
+comment = '~' ... '^~'

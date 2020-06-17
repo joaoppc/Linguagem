@@ -11,8 +11,9 @@ alpha   ([a-zA-Z])+
 
 {alpha}         {sscanf(yytext, "%s", yylval.name); return (STRING);}
 {numbers}       {yylval.number  = atoi(yytext); return (NUM);}
-";"             {return(SEMICOLON);}
-":"             {return(COLON);}
+";"             {return(SC);}
+":"             {return(OB);}
+":;"             {return(CB);}
 "~"             {return(TIO);}
 "<"             {return(LESS);}
 ">"             {return(BIGGER);}
@@ -21,35 +22,31 @@ alpha   ([a-zA-Z])+
 "+"             {return(PLUS);}
 "*"             {return(MULT);}
 "/"             {return(DIV);}
-"q"             {return(QUOC);}
-"ç"             {return(CEDILHA);}
+"ç"             {return(BP);}
+"#ç"             {return(EP);}
 "se"             {return(IF);}
 "enqnt"             {return(WHILE);}
-"para"             {return(FOR);}
 "senao"             {return(ELSE);}
 "e"             {return(AND);}
 "ou"             {return(OR);}
-"/l"             {return(NEWLINE);}
+"/n"             {return(NEWLINE);}
 "int"             {return(INT);}
 "bool"             {return(BOOL);}
+"str"             {return(STR);}
 "vrdd"             {return(TRUE);}
 "falso"             {return(FALSE);}
-"var"             {return(VAR);}
-"."             {return(DOT);}
-"["             {return(OCLASP);}
-"]"             {return(CCLASP);}
+"%"             {return(CONCAT);}
+"nao"             {return(NOT);}
+">>"             {return(OPEN);}
+"<<"             {return(CLOSE);}
 "=="             {return(EQUAL);}
-">="             {return(BIGEQ);}
-"<="             {return(LESSEQ);}
-"+="             {return(PLUSEQ);}
-"-="             {return(MINUSEQ);}
-"*="             {return(MULTEQ);}
-"/="             {return(DIVEQ);}
-"q/"             {return(QUOCEQ);}
 ","             {return(COMMA);}
-"tipo"             {return(TYPE);}
-"+1"             {return(ADDONE);}
-"-1"             {return(MINONE);}
+"printar"       {return(PRINT);}
+"ler"           {return(READ);}
+"retorna"       {return(RETURN);}
+"funcao"        {return(FUNC);}
+"\t"            {return(TAB);}
+
 
 .               {showError(); return(OTHER);}
 

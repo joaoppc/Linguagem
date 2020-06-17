@@ -1,8 +1,9 @@
-/* A Bison parser, made by GNU Bison 3.0.4.  */
+/* A Bison parser, made by GNU Bison 3.5.1.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+   Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,6 +31,9 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+/* Undocumented macros, especially those whose name start with YY_,
+   are private implementation details.  Do not rely on them.  */
+
 #ifndef YY_YY_JPL_TAB_H_INCLUDED
 # define YY_YY_JPL_TAB_H_INCLUDED
 /* Debug traces.  */
@@ -47,63 +51,58 @@ extern int yydebug;
   {
     STRING = 258,
     NUM = 259,
-    OTHER = 260,
-    SEMICOLON = 261,
-    PIC = 262,
-    COLON = 263,
-    TIO = 264,
-    LESS = 265,
-    BIGGER = 266,
-    ASSIGN = 267,
-    MINUS = 268,
-    PLUS = 269,
-    MULT = 270,
-    DIV = 271,
-    QUOC = 272,
-    CEDILHA = 273,
+    SC = 260,
+    COLON = 261,
+    TIO = 262,
+    LESS = 263,
+    BIGGER = 264,
+    ASSIGN = 265,
+    MINUS = 266,
+    PLUS = 267,
+    MULT = 268,
+    DIV = 269,
+    BP = 270,
+    EP = 271,
+    OB = 272,
+    CB = 273,
     IF = 274,
     WHILE = 275,
-    FOR = 276,
-    ELSE = 277,
-    AND = 278,
-    OR = 279,
-    NEWLINE = 280,
-    INT = 281,
-    BOOL = 282,
+    ELSE = 276,
+    AND = 277,
+    OR = 278,
+    NEWLINE = 279,
+    INT = 280,
+    BOOL = 281,
+    STR = 282,
     TRUE = 283,
     FALSE = 284,
-    VAR = 285,
-    DOT = 286,
-    OCLASP = 287,
-    CCLASP = 288,
+    CONCAT = 285,
+    NOT = 286,
+    OPEN = 287,
+    CLOSE = 288,
     EQUAL = 289,
-    BIGEQ = 290,
-    LESSEQ = 291,
-    PLUSEQ = 292,
-    MINUSEQ = 293,
-    MULTEQ = 294,
-    DIVEQ = 295,
-    QUOCEQ = 296,
-    COMMA = 297,
-    TYPE = 298,
-    ADDONE = 299,
-    MINONE = 300
+    COMMA = 290,
+    PRINT = 291,
+    READ = 292,
+    RETURN = 293,
+    FUNC = 294,
+    TAB = 295,
+    OTHER = 296
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-
 union YYSTYPE
 {
-#line 64 "jpl.y" /* yacc.c:1909  */
+#line 60 "jpl.y"
 
         char name[20];
         int number;
 
-#line 105 "jpl.tab.h" /* yacc.c:1909  */
-};
+#line 104 "jpl.tab.h"
 
+};
 typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

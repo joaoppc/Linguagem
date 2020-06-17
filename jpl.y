@@ -11,11 +11,9 @@ void  yyerror(const char* s);
 
 %}
 
-%token STRING 
+%token STRING
 %token NUM
-%token OTHER
-%token SEMICOLON
-%token PIC
+%token SC
 %token COLON
 %token TIO
 %token LESS
@@ -25,40 +23,38 @@ void  yyerror(const char* s);
 %token PLUS
 %token MULT
 %token DIV
-%token QUOC
-%token CEDILHA
+%token BP
+%token EP
+%token OB
+%token CB
 %token IF
 %token WHILE
-%token FOR
 %token ELSE
 %token AND
 %token OR
 %token NEWLINE
 %token INT
 %token BOOL
+%token STR
 %token TRUE
 %token FALSE
-%token VAR
-%token DOT
-%token OCLASP
-%token CCLASP
+%token CONCAT
+%token NOT
+%token OPEN
+%token CLOSE
 %token EQUAL
-%token BIGEQ
-%token LESSEQ
-%token PLUSEQ
-%token MINUSEQ
-%token MULTEQ
-%token DIVEQ
-%token QUOCEQ
 %token COMMA
-%token TYPE
-%token ADDONE
-%token MINONE
+%token PRINT
+%token READ
+%token RETURN
+%token FUNC
+%token TAB
+%token OTHER
 
 
 %type <name> STRING
 %type <number> NUM
-%type <name> PIC
+
 
 
 %union{
@@ -69,55 +65,78 @@ void  yyerror(const char* s);
 %%
 
 prog:
-    exps
+    BP block BP
 ;
 
-exps:
-    | exp SEMICOLON exps
+block:
+    | OB declaration statement CB
 ;
-exp:
-   STRING | NUM | OTHER
+declaration:
+   variableDeclaration | functionDeclaration
 ;
-log_or_exp:
-    log_or_exp | exp OR exp
+variableDeclaration:
+    variableIdentifier assignmentStatement SC
 ;
-log_and_exp:
-    log_and_exp | exp AND exp
+functionDeclaration:
+    FUNC function 
 ;
-equ_exp:
-   equ_exp | exp EQUAL exp
-;
-add_exp:
-    add_exp | exp PLUS exp | exp MINUS exp
-;
-
-mult_exp:
-    add_exp | exp MULT exp | exp DIV exp | exp QUOC exp
-;
-
-relational_exp:
-    relational_exp | exp LESS exp | exp BIGGER exp | exp LESSEQ exp | exp BIGEQ exp
-;
-assign_exp:
-    assign_exp | exp ASSIGN exp | exp MULTEQ exp | exp DIVEQ exp | exp QUOCEQ exp | exp PLUSEQ exp | exp MINUSEQ
-;
-iteration_stat:
-    WHILE BIGGER exp LESS COLON exps COLON SEMICOLON | FOR BIGGER exp COMMA exp COMMA exp LESS COLON exps COLON SEMICOLON
-;
-comment:
-    TIO TIO STRING | CEDILHA STRING CEDILHA
-;
-selection_stat:
-    IF BIGGER exp LESS COLON exps COLON SEMICOLON | IF BIGGER exp LESS COLON exps COLON ELSE COLON exps COLON SEMICOLON 
-;
-cast:
-    BIGGER TYPE LESS exp
+parameters:
+    | parameter COMMA parameter
 ;
 function:
-    STRING TYPE BIGGER VAR TYPE LESS COLON exps COLON SEMICOLON
+   functionIdentifier OPEN parameters CLOSE statements
 ;
-postfix:
-    exp OCLASP exp CCLASP | exp ADDONE | exp MINONE | exp DOT VAR;
+parameter:
+    STRING | NUM
+;
+
+functionIdentifier:
+   |STRING STRING | NUM
+;
+
+variableIdentifier:
+    | STRING STRING | NUM 
+;
+assignmentStatement:
+    variableIdentifier|functionIdentifier ASSIGN expression
+;
+statements:
+    | statement SC statement 
+;
+statement:
+    whileStatement | ifStatement | assignmentStatement | printStatement
+;
+whileStatement:
+    WHILE OPEN expression CLOSE statements
+;
+ifStatement:
+    IF OPEN expression CLOSE statements |IF OPEN expression CLOSE statements ELSE statements 
+;
+factor:
+variableIdentifier | NUM | STRING | functionIdentifier | OPEN expression CLOSE | NOT factor 
+;
+relationalExpression:
+    | expression relOp expression 
+;
+expression:
+    |term  addOp term 
+;
+term:
+    | factor  multOp factor 
+;
+addOp:
+    PLUS | MINUS | OR | CONCAT
+;
+multOp:
+    MULT | DIV | AND
+;
+relOp:
+    BIGGER | LESS | EQUAL
+;
+printStatement:
+    PRINT expression SC
+;
+
 %%
 int main() {
 	yyin = stdin;
