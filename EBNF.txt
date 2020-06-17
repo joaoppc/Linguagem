@@ -7,7 +7,7 @@ function = function-identifier ">>" parameter {','parameter} "<<"
 parameters = identifier
 assignment-statement = variable-identifier|function-identifier '=' expression
 identifier =  letter { letter | digit }
-variable-identifier =  letter { letter | digit }
+variable-identifier =  '&'  letter | digit 
 function-identifier = letter { letter | digit }
 statements = statement{';' statement}
 while-statement = 'enqnt' '>>' expression '<<' statement

@@ -123,18 +123,21 @@ class Tokenizer:
                 else:
                     if (string not in self.reserved):
 
-                        self.actual = Token('IDEN',string)
+                        self.actual = Token('NAME',string)
                     else:
                         raise Exception("palavra reservada")
+            elif self.origin[self.position] == '&':
+                var = "&"
+                self.position += 1
         
-            elif self.origin[self.position].isalpha() and self.position < len(self.origin):
-                var =''
-                while (self.origin[self.position].isalpha() or self.origin[self.position]=='_' or self.origin[self.position].isdigit())and self.position < len(self.origin):
-                    var += self.origin[self.position]
-                    self.position += 1
-                self.actual = Token('IDEN',var)
-            else:
-                raise Exception("definição de variável incorreta")
+                if self.origin[self.position].isalpha() and self.position < len(self.origin):
+                    var =''
+                    while (self.origin[self.position].isalpha() or self.origin[self.position]=='_' or self.origin[self.position].isdigit())and self.position < len(self.origin):
+                        var += self.origin[self.position]
+                        self.position += 1
+                    self.actual = Token('IDEN',var)
+                else:
+                    raise Exception("definição de variável incorreta")
                 
                     
 
@@ -146,10 +149,10 @@ class PrePro():
         comment_start = 0
         comment_end = 0
         while p<len(code)-1:
-            if code[p] == '~':
+            if code[p] == '~'and code[p-1] != '^':
                 comment_start = p
-            if code[p] == '^~':
-                comment_end = p+1
+            if code[p] == '^'and code[p+1]=='~':
+                comment_end = p+2
             p+=1
         code = code[:comment_start]+code[comment_end:]
         return code
@@ -169,9 +172,9 @@ class BinOp(Node):
         n1 = self.list_nodes[0].evaluate(stab)
         n2 = self.list_nodes[1].evaluate(stab)
 
-        if n1[1] == 'string' and (n2[1] == 'bool' or n2[1] == 'int') and self.varient != '.':
+        if n1[1] == 'string' and (n2[1] == 'bool' or n2[1] == 'int') and self.varient != '%':
             raise Exception ("Incompatible types")
-        elif (n1[1] == 'int' or n1[1] =='bool') and n2[1] == 'string' and self.varient != '.':
+        elif (n1[1] == 'int' or n1[1] =='bool') and n2[1] == 'string' and self.varient != '%':
             raise Exception ("Incompatible types")
 
 
@@ -189,9 +192,9 @@ class BinOp(Node):
             return ((n1[0] > n2[0]),'bool')
         if self.varient == '==':
             return ((n1[0] == n2[0]),'bool')
-        if self.varient == 'or':
+        if self.varient == 'ou':
             return ((n1[0] or n2[0]),'bool')
-        if self.varient == 'and':
+        if self.varient == 'e':
             return ((n1[0] and n2[0]),'bool')
         if self.varient == '.':
             return ((str(n1[0]) + str(int(n2[0]))),'string')
@@ -209,7 +212,7 @@ class UnOp(Node):
             return (n1[0],'int')
         if self.varient == '-':
             return (-n1[0],'int')   
-        if self.varient == '!':
+        if self.varient == 'nao':
             return   (not n1[0],'bool')
 
 class IntVal(Node):
@@ -497,7 +500,7 @@ class Parser:
 
         elif Parser.tokens.actual.type == 'FUNC':
             Parser.tokens.selectNext()
-            if Parser.tokens.actual.type == 'IDEN':
+            if Parser.tokens.actual.type == 'NAME':
                 func_name = Identifier(Parser.tokens.actual.value)
                 Parser.tokens.selectNext()
                 if Parser.tokens.actual.type == 'OPEN':
@@ -532,7 +535,7 @@ class Parser:
             else:
                 raise Exception("Sintax Error")
 
-        elif Parser.tokens.actual.type == 'IDEN':
+        elif Parser.tokens.actual.type == 'NAME':
             func = Parser.tokens.actual.value
             Parser.tokens.selectNext()
             if Parser.tokens.actual.type == 'OPEN':
@@ -609,7 +612,7 @@ class Parser:
                 raise Exception("Sintax Error")
             Parser.tokens.selectNext()
             return result
-        elif Parser.tokens.actual.type == 'IDEN':
+        elif Parser.tokens.actual.type == 'NAME':
             func = Parser.tokens.actual.value
             Parser.tokens.selectNext()
             if Parser.tokens.actual.type == 'OPEN':

@@ -1,6 +1,18 @@
 ç
 :
-a = 3;
-printar a;
+funcao soma>>a,b<<:
+    &c = &a+&b;
+    printar &c; 
+    retorna &c;
 :;
+&d = soma>>1,2<<;
+printar &d;
+&h = 4;
+enqnt>>&h>1<<:
+&h = &h - 1;
+printar &h;
+:;
+:;
+~comentario^~
+
 #ç
